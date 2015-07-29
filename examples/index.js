@@ -13,9 +13,11 @@ var data,
 // Plain arrays...
 data = new Array( 10 );
 for ( i = 0; i < data.length; i++ ) {
-	data[ i ] = i - 5;
+	data[ i ] = i;
 }
-out = cdf( data );
+out = cdf( data, {
+	'n': 10
+});
 console.log( 'Arrays: %s\n', out );
 
 
@@ -30,7 +32,8 @@ for ( i = 0; i < data.length; i++ ) {
 	};
 }
 out = cdf( data, {
-	'accessor': getValue
+	'accessor': getValue,
+	'n': 10
 });
 console.log( 'Accessors: %s\n', out );
 
@@ -44,7 +47,8 @@ for ( i = 0; i < data.length; i++ ) {
 }
 out = cdf( data, {
 	'path': 'x/1',
-	'sep': '/'
+	'sep': '/',
+	'n': 10
 });
 console.log( 'Deepset:');
 console.dir( out );
@@ -55,9 +59,11 @@ console.log( '\n' );
 // Typed arrays...
 data = new Float32Array( 10 );
 for ( i = 0; i < data.length; i++ ) {
-	data[ i ] = i - 5;
+	data[ i ] = i;
 }
-tmp = cdf( data );
+tmp = cdf( data, {
+	'n': 10
+});
 out = '';
 for ( i = 0; i < data.length; i++ ) {
 	out += tmp[ i ];
@@ -71,13 +77,16 @@ console.log( 'Typed arrays: %s\n', out );
 // ----
 // Matrices...
 mat = matrix( data, [5,2], 'float32' );
-out = cdf( mat );
+out = cdf( mat, {
+	'n': 10
+});
 console.log( 'Matrix: %s\n', out.toString() );
 
 
 // ----
 // Matrices (custom output data type)...
 out = cdf( mat, {
-	'dtype': 'uint8'
+	'dtype': 'uint8',
+	'n': 10
 });
 console.log( 'Matrix (%s): %s\n', out.dtype, out.toString() );

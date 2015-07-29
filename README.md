@@ -6,12 +6,12 @@ Cumulative Distribution Function
 
 The [cumulative distribution function](https://en.wikipedia.org/wiki/Cumulative_distribution_function) for a [Binomial](https://en.wikipedia.org/wiki/Binomial_distribution) random variable is
 
-<div class="equation" align="center" data-raw-text="" data-equation="eq:cdf">
-	<img src="" alt="Cumulative distribution function for a Binomial distribution.">
+<div class="equation" align="center" data-raw-text="F(x;n,p) = \sum_{i=0}^{\lfloor x \rfloor} {n\choose i}p^i(1-p)^{n-i} " data-equation="eq:cdf">
+	<img src="https://cdn.rawgit.com/distributions-io/binomial-cdf/d55208405d02cefc11c030b5690ff60430fd8211/docs/img/eqn.svg" alt="Cumulative distribution function for a Binomial distribution.">
 	<br>
 </div>
 
-where `n` is the number of trials and `p` is the success probability.
+where `n` is the number of trials and `p` is the success probability. The function is internally evaluated using the [incomplete beta function module](https://github.com/compute-io/betainc), as the CDF can be equivalently expressed as `I_{1-p}( n - x,x + 1 )`, where `I` is the [lower regularized incomplete beta function](https://en.wikipedia.org/wiki/Beta_function#Incomplete_beta_function).
 
 ## Installation
 
@@ -40,32 +40,34 @@ var matrix = require( 'dstructs-matrix' ),
 	i;
 
 out = cdf( 1 );
-// returns
+// returns 1
 
-x = [ -4, -2, 0, 2, 4 ];
+x = [ -1, 0, 1, 2 ];
 out = cdf( x );
-// returns [...]
+// returns [ 0, 0.5, 1, 1 ]
 
 x = new Float32Array( x );
 out = cdf( x );
-// returns Float64Array( [...] )
+// returns Float64Array( [0,0.5,1,1] )
 
 x = new Float32Array( 6 );
 for ( i = 0; i < 6; i++ ) {
-	x[ i ] = i - 3;
+	x[ i ] = i;
 }
 mat = matrix( x, [3,2], 'float32' );
 /*
-	[ -3 -2
-	  -1  0
-	   1  2 ]
+	[ 0 1
+	  2 3
+	  4 5 ]
 */
 
-out = cdf( mat );
+out = cdf( mat, {
+	'n': 8 // set the number of trials to eight
+});
 /*
-	[
-
-	   ]
+	[ ~0.004 ~0.0352
+	  ~0.145 ~0.363
+	  ~0.637 ~0.855 ]
 */
 ```
 
@@ -82,24 +84,23 @@ The function accepts the following `options`:
 A [Binomial](https://en.wikipedia.org/wiki/Binomial_distribution) distribution is a function of 2 parameter(s): `n`(number of trials) and `p`(success probability). By default, `n` is equal to `1` and `p` is equal to `0.5`. To adjust either parameter, set the corresponding option(s).
 
 ``` javascript
-var x = [ -4, -2, 0, 2, 4 ];
+var x = [ -1, 0, 1, 2, 3 ];
 
 var out = cdf( x, {
 	'n': 4,
-	'p': 4
+	'p': 0.2
 });
-// returns [...]
+// returns [ 0, ~0.41, ~0.819, ~0.973, ~0.998 ]
 ```
 
 For non-numeric `arrays`, provide an accessor `function` for accessing `array` values.
 
 ``` javascript
 var data = [
-	[0,-4],
-	[1,-2],
-	[2,0],
-	[3,2],
-	[4,4],
+	[0,-1],
+	[1,0],
+	[2,1],
+	[3,2]
 ];
 
 function getValue( d, i ) {
@@ -109,7 +110,7 @@ function getValue( d, i ) {
 var out = cdf( data, {
 	'accessor': getValue
 });
-// returns [...]
+// returns [ 0, 0.5, 1, 1 ]
 ```
 
 
@@ -117,11 +118,10 @@ To [deepset](https://github.com/kgryte/utils-deep-set) an object `array`, provid
 
 ``` javascript
 var data = [
-	{'x':[0,-4]},
-	{'x':[1,-2]},
-	{'x':[2,0]},
-	{'x':[3,2]},
-	{'x':[4,4]},
+	{'x':[0,-1]},
+	{'x':[1,0]},
+	{'x':[2,1]},
+	{'x':[3,2]}
 ];
 
 var out = cdf( data, {
@@ -130,11 +130,10 @@ var out = cdf( data, {
 });
 /*
 	[
-		{'x':[0,]},
-		{'x':[1,]},
-		{'x':[2,]},
-		{'x':[3,]},
-		{'x':[4,]},
+		{'x':[0,0]},
+		{'x':[1,0.5]},
+		{'x':[2,1]},
+		{'x':[3,1]}
 	]
 */
 
@@ -147,18 +146,18 @@ By default, when provided a [`typed array`](https://developer.mozilla.org/en-US/
 ``` javascript
 var x, out;
 
-x = new Float64Array( [-4,-2,0,2,4] );
+x = new Float64Array( [-1,0,1,2] );
 
 out = cdf( x, {
-	'dtype': 'float32'
+	'dtype': 'int32'
 });
-// returns Float32Array( [...] )
+// returns Int32Array( [0,0,1,1] )
 
 // Works for plain arrays, as well...
-out = cdf( [-4,-2,0,2,4], {
-	'dtype': 'float32'
+out = cdf( [-1,0,1,2], {
+	'dtype': 'int32'
 });
-// returns Float32Array( [...] )
+// returns Int32Array( [0,0,1,1] )
 ```
 
 By default, the function returns a new data structure. To mutate the input data structure (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
@@ -170,34 +169,35 @@ var bool,
 	x,
 	i;
 
-x = [ -4, -2, 0, 2, 4 ];
+x = [ -1, 0, 1, 2 ];
 
 out = cdf( x, {
 	'copy': false
 });
-// returns [...]
+// returns [ 0, 0.5, 1, 1 ]
 
 bool = ( x === out );
 // returns true
 
 x = new Float32Array( 6 );
 for ( i = 0; i < 6; i++ ) {
-	x[ i ] = i - 3 ;
+	x[ i ] = i;
 }
 mat = matrix( x, [3,2], 'float32' );
 /*
-	[ -3 -2
-	  -1  0
-	   1  2 ]
+	[ 0 1
+	  2 3
+	  4 5 ]
 */
 
 out = cdf( mat, {
-	'copy': false
+	'copy': false,
+	'n': 8 // set the number of trials to eight
 });
 /*
-	[
-
-	   ]
+	[ ~0.004 ~0.0352
+	  ~0.145 ~0.363
+	  ~0.637 ~0.855 ]
 */
 
 bool = ( mat === out );
@@ -267,9 +267,11 @@ var data,
 // Plain arrays...
 data = new Array( 10 );
 for ( i = 0; i < data.length; i++ ) {
-	data[ i ] = i - 5;
+	data[ i ] = i;
 }
-out = cdf( data );
+out = cdf( data, {
+	'n': 10
+});
 
 // Object arrays (accessors)...
 function getValue( d ) {
@@ -281,7 +283,8 @@ for ( i = 0; i < data.length; i++ ) {
 	};
 }
 out = cdf( data, {
-	'accessor': getValue
+	'accessor': getValue,
+	'n': 10
 });
 
 // Deep set arrays...
@@ -292,23 +295,29 @@ for ( i = 0; i < data.length; i++ ) {
 }
 out = cdf( data, {
 	'path': 'x/1',
-	'sep': '/'
+	'sep': '/',
+	'n': 10
 });
 
 // Typed arrays...
 data = new Float32Array( 10 );
 for ( i = 0; i < data.length; i++ ) {
-	data[ i ] = i - 5;
+	data[ i ] = i;
 }
-out = cdf( data );
+out = cdf( data, {
+	'n': 10
+});
 
 // Matrices...
 mat = matrix( data, [5,2], 'float32' );
-out = cdf( mat );
+out = cdf( mat, {
+	'n': 10
+});
 
 // Matrices (custom output data type)...
 out = cdf( mat, {
-	'dtype': 'uint8'
+	'dtype': 'uint8',
+	'n': 10
 });
 ```
 
