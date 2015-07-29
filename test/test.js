@@ -138,7 +138,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 			for ( var i = 0; i < data.length; i++ ) {
 				actual =  cdf( data[ i ], {
 					'n': validationData.n,
-		'p': validationData.p
+					'p': validationData.p
 				});
 				if ( isFiniteNumber( actual ) && isFiniteNumber( expected[ i ] ) ) {
 					assert.closeTo( actual, expected[ i ] , 1e-14 );
@@ -175,7 +175,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 		actual = cdf( data, {
 			'copy': false,
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 		assert.strictEqual( actual, data );
 
@@ -201,13 +201,13 @@ describe( 'distributions-binomial-cdf', function tests() {
 
 		actual = cdf( data, {
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 		assert.notEqual( actual, data );
 
 		for ( i = 0; i < actual.length; i++ ) {
 			if ( isFiniteNumber( actual[ i ] ) && isFiniteNumber( expected[ i ] ) ) {
-				assert.closeTo( actual[ i ], expected[ i ], 1e-14 );
+				assert.closeTo( actual[ i ], expected[ i ], 1e-12 );
 			}
 		}
 
@@ -215,7 +215,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 		actual = cdf( data, {
 			'copy': false,
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 		expected = new Float32Array( validationData.expected.map( function( d ) {
 			return d === 'Inf' ? Infinity : d;
@@ -224,7 +224,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 
 		for ( i = 0; i < actual.length; i++ ) {
 			if ( isFiniteNumber( actual[ i ] ) && isFiniteNumber( expected[ i ] ) ) {
-				assert.closeTo( actual[ i ], expected[ i ], 1e-14 );
+				assert.closeTo( actual[ i ], expected[ i ], 1e-12 );
 			}
 		}
 	});
@@ -245,7 +245,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 		actual = cdf( data, {
 			'dtype': 'float32',
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 
 		assert.notEqual( actual, data );
@@ -276,7 +276,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 		actual = cdf( data, {
 			'accessor': getValue,
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 		assert.notEqual( actual, data );
 
@@ -291,7 +291,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 			'accessor': getValue,
 			'copy': false,
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 		assert.strictEqual( actual, data );
 
@@ -335,7 +335,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 
 		for ( i = 0; i < data.length; i++ ) {
 			if ( isFiniteNumber( data[ i ].x[ 1 ] ) && isFiniteNumber( expected[ i ].x[ 1 ] ) ) {
-				assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-14 );
+				assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-12 );
 			}
 		}
 
@@ -353,7 +353,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 
 		for ( i = 0; i < data.length; i++ ) {
 			if ( isFiniteNumber( data[ i ].x[ 1 ] ) && isFiniteNumber( expected[ i ].x[ 1 ] ) ) {
-				assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-14, 'custom separator' );
+				assert.closeTo( data[ i ].x[ 1 ], expected[ i ].x[ 1 ], 1e-12, 'custom separator' );
 			}
 		}
 	});
@@ -374,7 +374,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 		mat = matrix( d1, [5,5], 'float64' );
 		out = cdf( mat, {
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 
 		for ( i = 0; i < out.length; i++ ) {
@@ -387,7 +387,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 		out = cdf( mat, {
 			'copy': false,
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 		assert.strictEqual( mat, out );
 
@@ -413,7 +413,7 @@ describe( 'distributions-binomial-cdf', function tests() {
 		out = cdf( mat, {
 			'dtype': 'float32',
 			'n': validationData.n,
-		'p': validationData.p
+			'p': validationData.p
 		});
 
 		assert.strictEqual( out.dtype, 'float32' );

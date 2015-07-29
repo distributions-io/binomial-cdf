@@ -1,8 +1,8 @@
 options( digits = 16 )
 library( jsonlite )
 
-n = 1
-p = 0.5
+n = 880
+p = 0.003
 x = seq( -1000, 1000, 0.5 )
 y = pbinom( x, n, p )
 
