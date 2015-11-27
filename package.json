@@ -20,7 +20,7 @@
   "main": "./lib",
   "repository": {
     "type": "git",
-    "url": "git://github.com/compute-io/binomial-cdf.git"
+    "url": "git://github.com/distributions-io/binomial-cdf.git"
   },
   "keywords": [
     "distributions.io",
@@ -30,10 +30,15 @@
     "stats",
     "cdf",
     "cumulative distribution",
-    "distribution function"
+    "distribution function",
+    "successes",
+    "independent trials",
+    "discrete",
+    "bernoulli",
+    "exponential family"
   ],
   "bugs": {
-    "url": "https://github.com/compute-io/binomial-cdf/issues"
+    "url": "https://github.com/distributions-io/binomial-cdf/issues"
   },
   "dependencies": {
     "compute-array-constructors": "^1.0.0",

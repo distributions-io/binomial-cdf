@@ -63,11 +63,12 @@ describe( 'validate', function tests() {
 			assert.isTrue( err instanceof TypeError );
 		}
 	});
-it( 'should return an error if provided a `p` parameter which is not a positive number', function test() {
+
+	it( 'should return an error if provided a `p` parameter which is not a number between 0 and 1', function test() {
 		var values, err;
 		 values = [
 			-2,
-			0,
+			2,
 			'5',
 			[],
 			true,
