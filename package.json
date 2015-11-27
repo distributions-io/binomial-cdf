@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "compute-array-constructors": "^1.0.0",
+    "compute-betainc": "git+https://github.com/compute-io/betainc.git",
     "dstructs-matrix": "^2.0.0",
     "utils-deep-get": "^1.0.0",
     "utils-deep-set": "^1.0.1",
